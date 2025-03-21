@@ -1,0 +1,86 @@
+package za.ac.cput.domain;
+
+/* Student.java
+   Student model class
+   Author: [Your Name]
+   Date: [Date]
+*/
+public class Student {
+    private String studentID;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+
+    public Student() {}
+
+    private Student(Builder builder) {
+        this.studentID = builder.studentID;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.email = builder.email;
+        this.password = builder.password;
+    }
+
+    public String getStudentID() { return studentID; }
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
+    public String getEmail() { return email; }
+    // Add getter for password if needed
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "studentID='" + studentID + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    public static class Builder {
+        private String studentID;
+        private String firstName;
+        private String lastName;
+        private String email;
+        private String password;
+
+        public Builder setStudentID(String studentID) {
+            this.studentID = studentID;
+            return this;
+        }
+
+        public Builder setFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder setLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder copy(Student student) {
+            this.setStudentID(student.studentID);
+            this.setFirstName(student.firstName);
+            this.setLastName(student.lastName);
+            this.setEmail(student.email);
+            // Optionally copy password if necessary
+            return this;
+        }
+
+        public Student build() {
+            return new Student(this);
+        }
+    }
+}
