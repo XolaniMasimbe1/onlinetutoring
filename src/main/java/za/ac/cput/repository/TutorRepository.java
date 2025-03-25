@@ -3,9 +3,11 @@ package za.ac.cput.repository;
 Author: Xolani Masimbe (222410817)
 Date: 23 March 2025
 */
+import za.ac.cput.domain.Review;
 import za.ac.cput.domain.Tutor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class TutorRepository implements IRepository<Tutor, String> {
     private List<Tutor> tutorList = new ArrayList<>();
@@ -60,7 +62,7 @@ public class TutorRepository implements IRepository<Tutor, String> {
     }
 
     @Override
-    public List<Tutor> getAll() {
+    public Set<Review> getAll() {
         return new ArrayList<>(tutorList);
     }
 }

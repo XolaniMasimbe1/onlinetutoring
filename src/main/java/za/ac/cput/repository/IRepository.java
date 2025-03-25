@@ -3,7 +3,9 @@ package za.ac.cput.repository;
 Author: Xolani Masimbe (222410817)
 Date: 23 March 2025
 */
-import java.util.List;
+import za.ac.cput.domain.Review;
+
+import java.util.Set;
 
 public interface IRepository<T, ID> {
     T create(T t);
@@ -14,5 +16,5 @@ public interface IRepository<T, ID> {
 
     boolean delete(ID id);
 
-    List<T> getAll();
+    Set<Review> getAll();
 }

@@ -14,7 +14,7 @@ class SessionFactoryTest {
                 "MATH101", "2025-04-01",
                 "10:00", "1 hour");
         assertNotNull(session);
-        assertEquals("MATH101", session.getSubjectCode()); // Ensures correct subjectCode
+        assertEquals("MATH101", session.getSubjectCode());
     }
 
     @Test
@@ -22,7 +22,7 @@ class SessionFactoryTest {
         Session session = SessionFactory.createSession("", "", "STU001",
                 "MATH101", "2025-04-01",
                 "10:00", "1 hour");
-        assertNull(session); // Invalid input should return null
+        assertNull(session);
     }
 }
 
