@@ -1,8 +1,10 @@
 package za.ac.cput.repository;
 
+import za.ac.cput.domain.Review;
 import za.ac.cput.domain.Session;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class SessionRepositoryImpl implements IRepository<Session, String> {
     private final List<Session> sessionDB;  // Final to ensure it is not reassigned
@@ -65,7 +67,7 @@ public class SessionRepositoryImpl implements IRepository<Session, String> {
     }
 
     @Override
-    public List<Session> getAll() {
+    public Set<Review> getAll() {
         return new ArrayList<>(sessionDB); // Returning a copy to prevent modification outside this class
     }
 }
