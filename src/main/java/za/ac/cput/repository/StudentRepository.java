@@ -1,5 +1,10 @@
 package za.ac.cput.repository;
 
+/* Student.java
+   Author: Anda Matomela (222578912)
+   Date: 22 March 2025
+*/
+
 import za.ac.cput.domain.Student;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,10 +32,10 @@ public class StudentRepository implements IRepository<Student, String> {
 
     @Override
     public Student create(Student student) {
-        if (student == null || student.getStudentID() == null) {
+        if (student == null || student.getStudentId() == null) {
             throw new IllegalArgumentException("Student and student ID cannot be null");
         }
-        return studentMap.putIfAbsent(student.getStudentID(), student);
+        return studentMap.putIfAbsent(student.getStudentId(), student);
     }
 
     @Override
@@ -43,12 +48,12 @@ public class StudentRepository implements IRepository<Student, String> {
 
     @Override
     public Student update(Student student) {
-        if (student == null || student.getStudentID() == null) {
+        if (student == null || student.getStudentId() == null) {
             throw new IllegalArgumentException("Student and student ID cannot be null");
         }
 
         // Since Student is immutable, we can only replace the entire object
-        return studentMap.replace(student.getStudentID(), student);
+        return studentMap.replace(student.getStudentId(), student);
     }
 
     @Override
