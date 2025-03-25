@@ -3,40 +3,42 @@ package za.ac.cput.domain;
 import java.util.Objects;
 
 /* Student.java
-   Student model class
    Author: Anda Matomela (222578912)
    Date: 22 March 2025
 */
 public class Student {
-    private final String studentID;
+    private final String studentId;
     private final String firstName;
     private final String lastName;
     private final String email;
     private final String password;
 
     private Student(Builder builder) {
-        this.studentID = builder.studentID;
+        this.studentId = builder.studentId;
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.email = builder.email;
         this.password = builder.password;
     }
 
-    public String getStudentID() { return studentID; }
+    public String getStudentId() {
+        return studentId;
+    }
+
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
     public String getEmail() { return email; }
     public String getPassword() { return password; }
 
     public static class Builder {
-        private String studentID;
+        private String studentId;
         private String firstName;
         private String lastName;
         private String email;
         private String password;
 
-        public Builder setStudentID(String studentID) {
-            this.studentID = studentID;
+        public Builder setStudentId(String studentId) {
+            this.studentId = studentId;
             return this;
         }
 
