@@ -2,7 +2,7 @@ package za.ac.cput.domain;
 
 /* Employee.java
 Tutor model class
-Author: Ross Barth (222410817)
+Author: Xolani Masimbe (222410817)
 Date: 20 March 2025
 */
 
@@ -11,6 +11,7 @@ public class Tutor {
     private String firstName;
     private String lastName;
     private String email;
+    private String subject;
 
     public Tutor() {
 
@@ -21,6 +22,7 @@ public class Tutor {
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.email = builder.email;
+        this.subject = builder.subject;
     }
 
     public String getIdentityNumber() {
@@ -38,6 +40,9 @@ public class Tutor {
     public String getEmail() {
         return email;
     }
+    public String getSubject() {
+        return subject;
+    }
 
     @Override
     public String toString() {
@@ -46,13 +51,16 @@ public class Tutor {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", subject='" + subject + '\'' +
                 '}';
     }
+
     public static class Builder {
         private String identityNumber;
         private String firstName;
         private String lastName;
         private String email;
+        private String subject;
 
         public Builder setIdentityNumber(String identityNumber) {
             this.identityNumber = identityNumber;
@@ -73,11 +81,16 @@ public class Tutor {
             this.email = email;
             return this;
         }
+        public Builder setSubject(String subject) {
+            this.subject = subject;
+            return this;
+        }
         public Builder copy(Tutor tutor) {
             this.setIdentityNumber(tutor.identityNumber);
             this.setFirstName(tutor.firstName);
             this.setLastName(tutor.lastName);
             this.setEmail(tutor.email);
+            this.setSubject(tutor.subject);
             return this;
         }
         public Tutor build() {
