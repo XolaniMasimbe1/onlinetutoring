@@ -66,9 +66,10 @@ public class SessionRepositoryImpl implements IRepository<Session, String> {
 
     @Override
     public List<Session> getAll() {
-        return new ArrayList<>(sessionDB);
+        return new ArrayList<>(sessionDB); // Defensive copy of sessions
     }
 }
+
 /* OnlineTutoring.java
 Tutor model class
 Author: Basetsana Masisi (222309385)

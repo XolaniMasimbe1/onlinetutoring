@@ -4,7 +4,7 @@ import za.ac.cput.repository.SessionRepositoryImpl;
 import za.ac.cput.domain.Session;
 import za.ac.cput.factory.SessionFactory;
 
-import java.util.List;  // Changed from Set to List
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -34,7 +34,7 @@ public class Main {
         // Update a session
         System.out.println("\n=== Updating Session S001 ===");
         Session updatedSession = new Session.Builder()
-                .copy(session1)  // Use copy constructor to maintain unchanged fields
+                .copy(session1)  // Using copy constructor
                 .setSubjectCode("PHY103") // Updated subject code
                 .setDate("2025-04-05") // Updated date
                 .setTime("14:00")
@@ -46,8 +46,8 @@ public class Main {
         System.out.println("Updated Session S001:");
         System.out.println(sessionRepository.read("S001"));
 
-        // Delete a session
-        System.out.println("\n=== Deleting Session S002 ===");
+        // Delete a session with emoji visual indicator
+        System.out.println("\n🗑 === Deleting Session S002 ===");
         boolean deleted = sessionRepository.delete("S002");
         System.out.println(deleted ? "Successfully deleted Session S002" : "Failed to delete Session S002");
 
@@ -56,7 +56,6 @@ public class Main {
         displaySessions(sessionRepository.getAll());
     }
 
-    // Changed parameter type from Set<Session> to List<Session> to match repository
     private static void displaySessions(List<Session> sessions) {
         if (sessions == null || sessions.isEmpty()) {
             System.out.println("No sessions found.");
