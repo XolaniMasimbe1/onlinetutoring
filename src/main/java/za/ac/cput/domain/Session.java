@@ -21,7 +21,7 @@ public class Session {
         this.duration = builder.duration;
     }
 
-    // Getters
+
     public String getSessionId() { return sessionId; }
     public String getTutorId (){ return tutorId; }
     public String getStudentId() { return studentId; }
@@ -30,7 +30,7 @@ public class Session {
     public String getTime() { return time; }
     public String getDuration() { return duration; }
 
-    // Builder Class
+
     public static class Builder {
         private String sessionId;
         private String tutorId;
@@ -79,7 +79,7 @@ public class Session {
             return new Session(this);
         }
 
-        // Copy existing Session object
+
         public Builder copy(Session session) {
             this.sessionId = session.sessionId;
             this.tutorId = session.tutorId;
