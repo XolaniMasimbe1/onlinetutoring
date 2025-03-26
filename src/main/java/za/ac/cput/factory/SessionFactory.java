@@ -22,10 +22,10 @@ public class SessionFactory
                 .setSessionId(sessionId)
                 .setTutorId(tutorId)
                 .setStudentId(studentId)
-                .setSubjectCode(subjectCode) // Updated attribute
+                .setSubjectCode(subjectCode)
                 .setDate(date)
                 .setTime(time)
-                .setDuration(duration) // Now a String
+                .setDuration(duration)
                 .build();
     }
 

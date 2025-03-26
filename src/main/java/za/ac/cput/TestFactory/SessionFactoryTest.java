@@ -16,15 +16,16 @@ class SessionFactoryTest {
         assertNotNull(session);
         assertEquals("MATH101", session.getSubjectCode());
     }
-
     @Test
     void testCreateInvalidSession() {
         Session session = SessionFactory.createSession("", "", "STU001",
                 "MATH101", "2025-04-01",
                 "10:00", "1 hour");
-        assertNull(session);
-    }
-}
+
+        assertNull(session, "Session should be null for invalid input");
+    }}
+
+
 
 
 
