@@ -9,20 +9,18 @@ public class SessionRepositoryImpl implements IRepository<Session, String> {
     private static SessionRepositoryImpl repository = null;
 
     private SessionRepositoryImpl() {
+
         this.sessionDB = new ArrayList<>();
     }
 
     // Singleton Pattern with Thread Safety
-    public static SessionRepositoryImpl getRepository() {
-        if (repository == null) {
-            synchronized (SessionRepositoryImpl.class) {
-                if (repository == null) {
-                    repository = new SessionRepositoryImpl();
-                }
-            }
+    public static SessionRepositoryImpl getRepository(){
+        if (repository == null){
+            repository = new SessionRepositoryImpl();
         }
-        return repository;
+        return  repository;
     }
+
 
     @Override
     public Session create(Session session) {
@@ -30,15 +28,17 @@ public class SessionRepositoryImpl implements IRepository<Session, String> {
         this.sessionDB.add(session);
         return session;
     }
-
     @Override
     public Session read(String sessionId) {
-        if (sessionId == null) return null;
-        return this.sessionDB.stream()
-                .filter(session -> sessionId.equals(session.getSessionId()))
-                .findFirst()
-                .orElse(null);
+        for (Session s : sessionDB) {
+            if (s.getSessionId().equals(sessionId)) {
+                return s;
+            }
+        }
+        return null;
     }
+
+
 
     @Override
     public Session update(Session session) {
@@ -52,6 +52,7 @@ public class SessionRepositoryImpl implements IRepository<Session, String> {
         }
         return null;
     }
+
 
     @Override
     public boolean delete(String sessionId) {
