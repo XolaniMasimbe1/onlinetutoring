@@ -1,72 +1,65 @@
 package za.ac.cput.repository;
 
 import za.ac.cput.domain.Session;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class SessionRepositoryImpl implements IRepository<Session, String> {
-    private final List<Session> sessionDB;
-    private static SessionRepositoryImpl repository = null;
+public class SessionRepositoryImpl {
+    private final ConcurrentHashMap<String, Session> sessionMap;
+    private static SessionRepositoryImpl repository;
 
     private SessionRepositoryImpl() {
-        this.sessionDB = new ArrayList<>();
+        sessionMap = new ConcurrentHashMap<>();
     }
 
-    // Singleton Pattern with Thread Safety
-    public static SessionRepositoryImpl getRepository() {
+    public static synchronized SessionRepositoryImpl getRepository() {
         if (repository == null) {
-            synchronized (SessionRepositoryImpl.class) {
-                if (repository == null) {
-                    repository = new SessionRepositoryImpl();
-                }
-            }
+            repository = new SessionRepositoryImpl();
         }
         return repository;
     }
 
-    @Override
     public Session create(Session session) {
-        if (session == null) return null;
-        this.sessionDB.add(session);
+        Objects.requireNonNull(session, "Session cannot be null");
+        Objects.requireNonNull(session.getSessionId(), "Session ID cannot be null");
+
+        // Prevent duplicates
+        if (sessionMap.containsKey(session.getSessionId())) {
+            return sessionMap.get(session.getSessionId());
+        }
+
+        sessionMap.put(session.getSessionId(), session);
         return session;
     }
 
-    @Override
     public Session read(String sessionId) {
-        if (sessionId == null) return null;
-        return this.sessionDB.stream()
-                .filter(session -> sessionId.equals(session.getSessionId()))
-                .findFirst()
-                .orElse(null);
+        Objects.requireNonNull(sessionId, "Session ID cannot be null");
+        return sessionMap.get(sessionId);
     }
 
-    @Override
     public Session update(Session session) {
-        if (session == null || session.getSessionId() == null) return null;
+        Objects.requireNonNull(session, "Session cannot be null");
+        Objects.requireNonNull(session.getSessionId(), "Session ID cannot be null");
 
-        Session oldSession = read(session.getSessionId());
-        if (oldSession != null) {
-            sessionDB.remove(oldSession);
-            sessionDB.add(session);
-            return session;
+        if (!sessionMap.containsKey(session.getSessionId())) {
+            return null;
         }
-        return null;
+
+        sessionMap.put(session.getSessionId(), session);
+        return session;
     }
 
-    @Override
     public boolean delete(String sessionId) {
-        if (sessionId == null) return false;
-        Session session = read(sessionId);
-        if (session != null) {
-            this.sessionDB.remove(session);
-            return true;
-        }
-        return false;
+        Objects.requireNonNull(sessionId, "Session ID cannot be null");
+        return sessionMap.remove(sessionId) != null;
     }
 
-    @Override
     public List<Session> getAll() {
-        return new ArrayList<>(sessionDB); // Defensive copy of sessions
+        return new ArrayList<>(sessionMap.values());
+    }
+
+    public void clear() {
+        sessionMap.clear();
     }
 }
 

@@ -58,6 +58,6 @@ public class SubjectRepository implements IRepository<Subject, String> {
 
     @Override
     public List<Subject> getAll() {
-        return new ArrayList<>(subjectDB.values()); // Return a copy of all subjects as a List
+        return new ArrayList<>(subjectDB.values());
     }
 }
