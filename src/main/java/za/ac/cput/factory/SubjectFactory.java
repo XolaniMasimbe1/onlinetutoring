@@ -1,19 +1,19 @@
 package za.ac.cput.factory;
+
 import za.ac.cput.domain.Subject;
+import za.ac.cput.util.Helper;
 
 public class SubjectFactory {
-
-    public static Subject createSubject(String subjectId, String name, String description, String gradeLevel)  {
-        if (subjectId == null || subjectId.isEmpty()) {
+    public static Subject createSubject(String subjectId, String name,
+                                        String description, String gradeLevel) {
+        // Validate required fields
+        if (Helper.isNullOrEmpty(subjectId)) {
             throw new IllegalArgumentException("Subject ID cannot be null or empty");
         }
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("Subject name cannot be null or empty");
+        if (Helper.isNullOrEmpty(name)) {
+            throw new IllegalArgumentException("Name cannot be null or empty");
         }
-        if (description == null || description.isEmpty()) {
-            throw new IllegalArgumentException("Description cannot be null or empty");
-        }
-        if (gradeLevel == null || gradeLevel.isEmpty()) {
+        if (Helper.isNullOrEmpty(gradeLevel)) {
             throw new IllegalArgumentException("Grade level cannot be null or empty");
         }
 
@@ -25,4 +25,3 @@ public class SubjectFactory {
                 .build();
     }
 }
-

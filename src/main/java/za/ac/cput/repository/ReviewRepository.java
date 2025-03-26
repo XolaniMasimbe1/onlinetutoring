@@ -1,68 +1,73 @@
-/* OnlineTutoring.java
-Tutor model class
-Author: Njabulo N Mathabela (212061208)
-Date: 24 March 2025
-*/
 package za.ac.cput.repository;
 
 import za.ac.cput.domain.Review;
-
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ReviewRepository implements IRepository<Review, String> {
-    private static ReviewRepository repository = null;
-    private Set<Review> reviewDB;
+    private final ConcurrentHashMap<String, Review> reviewMap;
+    private static ReviewRepository repository;
 
     private ReviewRepository() {
-        this.reviewDB = new HashSet<>();
+        reviewMap = new ConcurrentHashMap<>();
     }
 
-    public static ReviewRepository getRepository() {
+    public static synchronized ReviewRepository getRepository() {
         if (repository == null) {
             repository = new ReviewRepository();
         }
         return repository;
     }
 
+    public static synchronized void resetRepository() {
+        repository = null;
+    }
+
     @Override
     public Review create(Review review) {
-        if (reviewDB.add(review)) {
-            return review;
+        Objects.requireNonNull(review, "Review cannot be null");
+        Objects.requireNonNull(review.getReviewId(), "Review ID cannot be null");
+
+        // Prevent duplicates
+        if (reviewMap.containsKey(review.getReviewId())) {
+            return reviewMap.get(review.getReviewId());
         }
-        return null;
+
+        reviewMap.put(review.getReviewId(), review);
+        return review;
     }
 
     @Override
     public Review read(String reviewId) {
-        return reviewDB.stream()
-                .filter(review -> review.getReviewId().equals(reviewId))
-                .findFirst()
-                .orElse(null);
+        Objects.requireNonNull(reviewId, "Review ID cannot be null");
+        return reviewMap.get(reviewId);
     }
 
     @Override
-    public Review update(Review updatedReview) {
-        Review existingReview = read(updatedReview.getReviewId());
-        if (existingReview != null) {
-            reviewDB.remove(existingReview);
-            reviewDB.add(updatedReview);
-            return updatedReview;
+    public Review update(Review review) {
+        Objects.requireNonNull(review, "Review cannot be null");
+        Objects.requireNonNull(review.getReviewId(), "Review ID cannot be null");
+
+        if (!reviewMap.containsKey(review.getReviewId())) {
+            return null;
         }
-        return null;
+
+        reviewMap.put(review.getReviewId(), review);
+        return review;
     }
 
     @Override
     public boolean delete(String reviewId) {
-        Review reviewToDelete = read(reviewId);
-        if (reviewToDelete != null) {
-            return reviewDB.remove(reviewToDelete);
-        }
-        return false;
+        Objects.requireNonNull(reviewId, "Review ID cannot be null");
+        return reviewMap.remove(reviewId) != null;
     }
 
     @Override
-    public Set<Review> getAll() {
-        return reviewDB;
+    public List<Review> getAll() {
+        return new ArrayList<>(reviewMap.values());
+    }
+
+    public void clear() {
+        reviewMap.clear();
     }
 }

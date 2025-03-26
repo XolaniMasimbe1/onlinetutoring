@@ -6,11 +6,6 @@ import za.ac.cput.factory.SubjectFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Test class for SubjectFactory.
- * Author: Siphosenkosi Mbala (221140700)
- * Date: 25 March 2025
- */
 class SubjectFactoryTest {
 
     @Test
@@ -39,9 +34,9 @@ class SubjectFactoryTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            // SubjectFactory.createSubject("ENG101", name, "Description", "Grade 11");
+            SubjectFactory.createSubject("ENG101", name, "Description", "Grade 11");
         });
 
-        // assertEquals("Name cannot be null or empty", exception.getMessage());
+        assertEquals("Name cannot be null or empty", exception.getMessage());
     }
 }
