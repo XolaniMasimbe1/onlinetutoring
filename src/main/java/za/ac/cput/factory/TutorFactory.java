@@ -11,8 +11,8 @@ public class TutorFactory {
 
     public static Tutor createTutorFactory(String identityNumber, String firstName, String lastName,
                                            String email,String Subject) {
-        if(Helper.isNullorEmpty(identityNumber) || Helper.isNullorEmpty(firstName)
-        || Helper.isNullorEmpty(lastName) || Helper.isNullorEmpty(email) || Helper.isNullorEmpty(Subject)){
+        if(Helper.isNullOrEmpty(identityNumber) || Helper.isNullOrEmpty(firstName)
+        || Helper.isNullOrEmpty(lastName) || Helper.isNullOrEmpty(email) || Helper.isNullOrEmpty(Subject)){
             return null;
         }
         if(!Helper.isValidEmail(email)){
