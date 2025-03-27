@@ -3,50 +3,47 @@ package za.ac.cput.repository;
 import za.ac.cput.domain.Tutor;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class TutorRepository implements IRepository<Tutor, String> {
-    private final List<Tutor> tutorList = new ArrayList<>();
+
     private static TutorRepository repository = null;
+    private List<Tutor> tutorList;
 
-    private TutorRepository() {}
+    private TutorRepository() {
+        tutorList = new ArrayList<>();
+    }
 
-    public static synchronized TutorRepository getRepository() {
+    public static TutorRepository getRepository() {
         if (repository == null) {
             repository = new TutorRepository();
         }
         return repository;
     }
 
-    public static void resetRepository() {
-        repository = null;
-    }
-
     @Override
     public Tutor create(Tutor tutor) {
-        Objects.requireNonNull(tutor, "Tutor cannot be null");
-        if (read(tutor.getIdentityNumber()) != null) {
-            return null;
+        boolean success = tutorList.add(tutor);
+        if (success) {
+            return tutor;
         }
-        tutorList.add(tutor);
-        return tutor;
+        return null;
     }
 
     @Override
     public Tutor read(String identityNumber) {
-        Objects.requireNonNull(identityNumber, "ID cannot be null");
-        return tutorList.stream()
-                .filter(t -> t.getIdentityNumber().equals(identityNumber))
-                .findFirst()
-                .orElse(null);
+        for (Tutor t : tutorList) {
+            if (t.getIdentityNumber().equals(identityNumber)) {
+                return t;
+            }
+        }
+        return null;
     }
 
     @Override
     public Tutor update(Tutor tutor) {
-        Objects.requireNonNull(tutor, "Tutor cannot be null");
-        Tutor existing = read(tutor.getIdentityNumber());
-        if (existing != null) {
-            tutorList.remove(existing);
+        Tutor existingTutor = read(tutor.getIdentityNumber());
+        if (existingTutor != null) {
+            tutorList.remove(existingTutor);
             tutorList.add(tutor);
             return tutor;
         }
@@ -55,16 +52,15 @@ public class TutorRepository implements IRepository<Tutor, String> {
 
     @Override
     public boolean delete(String identityNumber) {
-        Objects.requireNonNull(identityNumber, "ID cannot be null");
-        Tutor tutor = read(identityNumber);
-        if (tutor != null) {
-            return tutorList.remove(tutor);
+        Tutor tutorToDelete = read(identityNumber);
+        if (tutorToDelete == null) {
+            return false;
         }
-        return false;
+        return tutorList.remove(tutorToDelete);
     }
 
     @Override
     public List<Tutor> getAll() {
-        return new ArrayList<>(tutorList);
+        return tutorList;
     }
 }

@@ -1,88 +1,72 @@
-package za.ac.cput.TestRepository;
+package za.ac.cput.repository;
 
 import za.ac.cput.domain.Session;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import za.ac.cput.repository.SessionRepositoryImpl;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@TestMethodOrder(MethodOrderer.MethodName.class) // Ensures test order
-class SessionRepositoryTest {
+public class SessionRepositoryImpl {
+    private final ConcurrentHashMap<String, Session> sessionMap;
     private static SessionRepositoryImpl repository;
-    private Session session;
 
-    @BeforeEach
-    void setUp() {
-        repository = SessionRepositoryImpl.getRepository();
-        repository.getAll().clear(); // Clear repository before each test
-
-        session = new Session.Builder()
-                .setSessionId("S001")
-                .setTutorId("T001")
-                .setStudentId("STU001")
-                .setSubjectCode("MATH101")
-                .setDate("2025-04-01")
-                .setTime("10:00")
-                .setDuration("1 hour")
-                .build();
+    private SessionRepositoryImpl() {
+        sessionMap = new ConcurrentHashMap<>();
     }
 
-    @Test
-    void a_testCreate() {
-        Session created = repository.create(session);
-        assertNotNull(created);
-        assertEquals(session.getSessionId(), created.getSessionId());
-        assertTrue(repository.getAll().contains(created));
+    public static synchronized SessionRepositoryImpl getRepository() {
+        if (repository == null) {
+            repository = new SessionRepositoryImpl();
+        }
+        return repository;
     }
 
-    @Test
-    void b_testRead() {
-        repository.create(session); // Ensure session exists first
-        Session read = repository.read("S001");
-        assertNotNull(read);
-        assertEquals(session.getSessionId(), read.getSessionId());
-        assertEquals(session.getTutorId(), read.getTutorId());
+    public Session create(Session session) {
+        Objects.requireNonNull(session, "Session cannot be null");
+        Objects.requireNonNull(session.getSessionId(), "Session ID cannot be null");
+
+        // Prevent duplicates
+        if (sessionMap.containsKey(session.getSessionId())) {
+            return sessionMap.get(session.getSessionId());
+        }
+
+        sessionMap.put(session.getSessionId(), session);
+        return session;
     }
 
-    @Test
-    void c_testUpdate() {
-        repository.create(session);
-        Session updated = new Session.Builder()
-                .copy(session)
-                .setTime("11:00") // Change time
-                .build();
-
-        Session result = repository.update(updated);
-        assertNotNull(result);
-        assertEquals("11:00", repository.read("S001").getTime());
+    public Session read(String sessionId) {
+        Objects.requireNonNull(sessionId, "Session ID cannot be null");
+        return sessionMap.get(sessionId);
     }
 
-    @Test
-    void d_testDelete() {
-        repository.create(session);
-        boolean deleted = repository.delete("S001");
-        assertTrue(deleted);
-        assertNull(repository.read("S001"));
+    public Session update(Session session) {
+        Objects.requireNonNull(session, "Session cannot be null");
+        Objects.requireNonNull(session.getSessionId(), "Session ID cannot be null");
+
+        if (!sessionMap.containsKey(session.getSessionId())) {
+            return null;
+        }
+
+        sessionMap.put(session.getSessionId(), session);
+        return session;
+
     }
 
-    @Test
-    void e_testGetAll() {
-        repository.create(session);
-        assertEquals(1, repository.getAll().size());
+    public boolean delete(String sessionId) {
+        Objects.requireNonNull(sessionId, "Session ID cannot be null");
+        return sessionMap.remove(sessionId) != null;
+    }
+
+    public List<Session> getAll() {
+        return new ArrayList<>(sessionMap.values());
+    }
+
+    public void clear() {
+        sessionMap.clear();
     }
 }
 
-
-
-
-
-//* OnlineTutoring.java
-////
-////Tutor model class
-//Author: Basetsana Masisi (222309385)
-//Date: 24 March 2025
-//* /
-//*/
+/* OnlineTutoring.java
+Tutor model class
+Author: Basetsana Masisi (222309385)
+Date: 22 March 2025
+modified 25 March 2025
+*/
