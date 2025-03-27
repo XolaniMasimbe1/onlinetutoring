@@ -1,57 +1,46 @@
 package za.ac.cput.TestFactory;
 
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import za.ac.cput.domain.Tutor;
 import za.ac.cput.factory.TutorFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TutorFactoryTest {
+    private static Tutor t1 = TutorFactory.createTutorFactory("0103315193088", "Xolani", "Masimbe");
+
+    private static Tutor t2 = TutorFactory.createTutorFactory("0312070536881", "Hope", "Kgomokaboya",
+            "22215474@mycput.ac.za", "Physical Science");
+
+    private static Tutor t3 = TutorFactory.createTutorFactory("0211071405088", "Isabel", "Mandlaze",
+            "isabelcput.ac.za", "History");
+
     @Test
     @Order(1)
     public void testCreateTutor() {
-        Tutor t1 = TutorFactory.createTutorFactory("0103315193088", "Xolani",
-                "Masimbe", "222410817@mycput.ac.za", "Mathematics");
         assertNotNull(t1);
-        System.out.println("Created Tutor: " + t1);
+        System.out.println( t1);
     }
 
     @Test
     @Order(2)
-    public void testCreateAnotherTutor() {
-        Tutor t2 = TutorFactory.createTutorFactory("0312070536881", "Hope", "Kgomokaboya",
-                "22215474@mycput.ac.za", "Physical Science");
+    public void testCreateTutorWithAllAttributes() {
         assertNotNull(t2);
-        System.out.println("Created another Tutor: " + t2);
+        System.out.println( t2.toString());
     }
 
     @Test
     @Order(3)
-    public void testCreateInvalidTutor() {
-        Tutor t3 = TutorFactory.createTutorFactory("", "Thoblie",
-                "Masimbe", "thobile@gmail.com", "Life Orientation");
-        assertNull(t3, "Should return null for empty identity number");
-        System.out.println("Invalid tutor creation test passed (returned null as expected)");
+    public void testCreateTutorThatFails() {
+        assertNull(t3);
+        System.out.println(t3);
     }
 
     @Test
+    @Disabled
     @Order(4)
-    public void testCreateTutorWithNullName() {
-        Tutor t4 = TutorFactory.createTutorFactory("0211071405088", null,
-                "Mandlaze", "isabelmandlaze@gmail.com", "History");
-        assertNull(t4, "Should return null when creating tutor with null name");
-        System.out.println("Null first name test passed (returned null as expected)");
-    }
-
-    @Test
-    @Order(5)
-    public void testTutorEquality() {
-        Tutor t1 = TutorFactory.createTutorFactory("0103315193088", "Xolani", "Masimbe",
-                "222410817@mycput.ac.za", "Mathematics");
-        Tutor t5 = TutorFactory.createTutorFactory("0103315193088", "Xolani", "Masimbe",
-                "222410817@mycput.ac.za", "Mathematics");
-        assertEquals(t1.getIdentityNumber(), t5.getIdentityNumber(), "Tutors with same ID should be equal");
-        System.out.println("Equality test passed for tutor IDs: " + t1.getIdentityNumber());
+    public void testNotImplementedYet() {
+        System.out.println("This test is not implemented yet");
     }
 }

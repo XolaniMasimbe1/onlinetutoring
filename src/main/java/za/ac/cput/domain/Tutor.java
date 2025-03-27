@@ -1,10 +1,7 @@
 package za.ac.cput.domain;
 
-/* Employee.java
-Tutor model class
-Author: Xolani Masimbe (222410817)
-Date: 20 March 2025
-*/
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tutor {
     private String identityNumber;
@@ -12,36 +9,59 @@ public class Tutor {
     private String lastName;
     private String email;
     private String subject;
+    private List<Session> sessions;
+    private List<Review> reviews;
 
     public Tutor() {
-
+        this.sessions = new ArrayList<>();
+        this.reviews = new ArrayList<>();
     }
 
-    private Tutor (Builder builder) {
+    private Tutor(Builder builder) {
         this.identityNumber = builder.identityNumber;
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.email = builder.email;
         this.subject = builder.subject;
+        this.sessions = new ArrayList<>();
+        this.reviews = new ArrayList<>();
     }
+
 
     public String getIdentityNumber() {
         return identityNumber;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getEmail() {
+        return email;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getFirstName() {
+        return firstName;
     }
+
     public String getSubject() {
         return subject;
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void addSession(Session session) {
+        this.sessions.add(session);
+    }
+
+    public void addReview(Review review) {
+        this.reviews.add(review);
     }
 
     @Override
@@ -52,6 +72,8 @@ public class Tutor {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", subject='" + subject + '\'' +
+                ", sessions=" + sessions +
+                ", reviews=" + reviews +
                 '}';
     }
 
@@ -81,21 +103,22 @@ public class Tutor {
             this.email = email;
             return this;
         }
+
         public Builder setSubject(String subject) {
             this.subject = subject;
             return this;
         }
         public Builder copy(Tutor tutor) {
-            this.setIdentityNumber(tutor.identityNumber);
-            this.setFirstName(tutor.firstName);
-            this.setLastName(tutor.lastName);
-            this.setEmail(tutor.email);
-            this.setSubject(tutor.subject);
+            this.identityNumber = tutor.identityNumber;
+            this.firstName = tutor.firstName;
+            this.lastName = tutor.lastName;
+            this.email = tutor.email;
+            this.subject = tutor.subject;
             return this;
         }
+
         public Tutor build() {
             return new Tutor(this);
         }
     }
-
 }
