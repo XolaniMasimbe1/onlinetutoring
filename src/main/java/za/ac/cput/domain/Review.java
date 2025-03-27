@@ -1,12 +1,10 @@
-/* OnlineTutoring.java
-Tutor model class
-Author: Njabulo N Mathabela (212161208)
-Date: 20 March 2025
-*/
 package za.ac.cput.domain;
 
 import java.util.Objects;
 
+/**
+ * Review domain class representing a student's review of a tutoring session.
+ */
 public class Review {
     private final String reviewId;
     private final String tutorId;
@@ -24,28 +22,25 @@ public class Review {
         this.response = builder.response;
     }
 
-    public String getReviewId() {
-        return reviewId;
+    // Getters
+    public String getReviewId() { return reviewId; }
+    public String getTutorId() { return tutorId; }
+    public String getStudentId() { return studentId; }
+    public int getRating() { return rating; }
+    public String getComment() { return comment; }
+    public String getResponse() { return response; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Review review = (Review) o;
+        return Objects.equals(reviewId, review.reviewId);
     }
 
-    public String getTutorId() {
-        return tutorId;
-    }
-
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public String getResponse() {
-        return response;
+    @Override
+    public int hashCode() {
+        return Objects.hash(reviewId);
     }
 
     @Override
@@ -58,24 +53,6 @@ public class Review {
                 ", comment='" + comment + '\'' +
                 ", response='" + response + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Review review = (Review) o;
-        return rating == review.rating &&
-                Objects.equals(reviewId, review.reviewId) &&
-                Objects.equals(tutorId, review.tutorId) &&
-                Objects.equals(studentId, review.studentId) &&
-                Objects.equals(comment, review.comment) &&
-                Objects.equals(response, review.response);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(reviewId, tutorId, studentId, rating, comment, response);
     }
 
     public static class Builder {
@@ -113,6 +90,16 @@ public class Review {
 
         public Builder setResponse(String response) {
             this.response = response;
+            return this;
+        }
+
+        public Builder copy(Review review) {
+            this.reviewId = review.reviewId;
+            this.tutorId = review.tutorId;
+            this.studentId = review.studentId;
+            this.rating = review.rating;
+            this.comment = review.comment;
+            this.response = review.response;
             return this;
         }
 

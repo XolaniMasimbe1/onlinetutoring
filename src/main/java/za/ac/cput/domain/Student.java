@@ -61,6 +61,14 @@ public class Student {
             this.password = password;
             return this;
         }
+        public Builder copy(Student student) {
+            this.studentId = student.studentId;
+            this.firstName = student.firstName;
+            this.lastName = student.lastName;
+            this.email = student.email;
+            this.password = student.password;
+            return this;
+        }
 
         public Student build() {
             return new Student(this);

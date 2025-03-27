@@ -28,7 +28,7 @@ public class StudentFactoryTest {
     @Test
     public void testCreateStudentWithNullId() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            StudentFactory.createStudent(null, "John", "Doe", "john.doe@example.com");
+            StudentFactory.createStudent(null, "Anda", "Matomela", "222578912@mycput.ac.za");
         });
         assertEquals("Student ID cannot be null", exception.getMessage());
     }
@@ -36,7 +36,7 @@ public class StudentFactoryTest {
     @Test
     public void testCreateStudentWithEmptyId() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            StudentFactory.createStudent("", "John", "Doe", "john.doe@example.com");
+            StudentFactory.createStudent("", "Anda", "Matomela", "222578912@mycput.ac.za");
         });
         assertEquals("Student ID cannot be empty", exception.getMessage());
     }
@@ -44,7 +44,7 @@ public class StudentFactoryTest {
     @Test
     public void testCreateStudentWithInvalidEmail() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            StudentFactory.createStudent("S123", "John", "Doe", "invalid-email");
+            StudentFactory.createStudent("S123", "Anda", "Matomela", "invalid-email");
         });
         assertEquals("Invalid email format", exception.getMessage());
     }
