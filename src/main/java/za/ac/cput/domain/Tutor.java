@@ -122,3 +122,9 @@ public class Tutor {
         }
     }
 }
+/* OnlineTutoring.java
+Subject model class
+Author: Xolani Masimbe (222410817)
+Date: 23 March 2025
+
+*/
