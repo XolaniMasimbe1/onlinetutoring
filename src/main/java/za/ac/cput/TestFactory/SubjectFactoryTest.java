@@ -1,5 +1,12 @@
 package za.ac.cput.TestFactory;
 
+/* OnlineTutoring.java
+Subject model class
+Author: Siphosenkosi Mbala (221140700)
+Date: 23 March 2025
+*/
+
+
 import za.ac.cput.domain.Subject;
 import org.junit.jupiter.api.Test;
 import za.ac.cput.factory.SubjectFactory;

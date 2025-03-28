@@ -1,16 +1,19 @@
 package za.ac.cput.repository;
 
+/* OnlineTutoring.java
+Subject model class
+Author: Siphosenkosi Mbala (221140700)
+Date: 23 March 2025
+*/
+
+
 import za.ac.cput.domain.Subject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Repository implementation for Subject entity.
- * Author: Siphosenkosi Mbala (221140700)
- * Date: 25 March 2025
- */
+
 public class SubjectRepository implements IRepository<Subject, String> {
     private final Map<String, Subject> subjectDB;
 

@@ -1,5 +1,12 @@
 package za.ac.cput.TestRepository;
 
+/* OnlineTutoring.java
+Subject model class
+Author: Siphosenkosi Mbala (221140700)
+Date: 23 March 2025
+*/
+
+
 import za.ac.cput.domain.Subject;
 import za.ac.cput.factory.SubjectFactory;
 import org.junit.jupiter.api.*;
@@ -7,11 +14,7 @@ import za.ac.cput.repository.SubjectRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Test class for SubjectRepository.
- * Author: Siphosenkosi Mbala (221140700)
- * Date: 25 March 2025
- */
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class SubjectRepositoryTest {
     private static final SubjectRepository repository = new SubjectRepository();
