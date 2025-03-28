@@ -1,72 +1,80 @@
 package za.ac.cput.repository;
 
 import za.ac.cput.domain.Session;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import za.ac.cput.repository.IRepository;
 
-public class SessionRepositoryImpl {
-    private final ConcurrentHashMap<String, Session> sessionMap;
-    private static SessionRepositoryImpl repository;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SessionRepositoryImpl implements IRepository<Session, String> {
+    private static SessionRepositoryImpl repository = null;
+    private final List<Session> sessionList;
 
     private SessionRepositoryImpl() {
-        sessionMap = new ConcurrentHashMap<>();
+        sessionList = new ArrayList<>();
     }
 
-    public static synchronized SessionRepositoryImpl getRepository() {
+    public static SessionRepositoryImpl getRepository() {
         if (repository == null) {
             repository = new SessionRepositoryImpl();
         }
         return repository;
     }
 
+    @Override
     public Session create(Session session) {
-        Objects.requireNonNull(session, "Session cannot be null");
-        Objects.requireNonNull(session.getSessionId(), "Session ID cannot be null");
-
-        // Prevent duplicates
-        if (sessionMap.containsKey(session.getSessionId())) {
-            return sessionMap.get(session.getSessionId());
+        if (session == null || session.getSessionId() == null) {
+            throw new IllegalArgumentException("Session ID cannot be null");
         }
-
-        sessionMap.put(session.getSessionId(), session);
-        return session;
+        boolean success = sessionList.add(session);
+        return success ? session : null;
     }
 
-    public Session read(String sessionId) {
-        Objects.requireNonNull(sessionId, "Session ID cannot be null");
-        return sessionMap.get(sessionId);
+    @Override
+    public Session read(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException(" SessionID cannot be null");
+        }
+        for (Session s : sessionList) {
+            if (s.getSessionId().equals(id)) {
+                return s;
+            }
+        }
+        return null;
     }
 
+    @Override
     public Session update(Session session) {
-        Objects.requireNonNull(session, "Session cannot be null");
-        Objects.requireNonNull(session.getSessionId(), "Session ID cannot be null");
-
-        if (!sessionMap.containsKey(session.getSessionId())) {
-            return null;
+        if (session == null || session.getSessionId() == null) {
+            throw new IllegalArgumentException("Session and Session ID cannot be null");
         }
-
-        sessionMap.put(session.getSessionId(), session);
-        return session;
-
+        Session existingSession = read(session.getSessionId());
+        if (existingSession != null) {
+            sessionList.remove(existingSession);
+            sessionList.add(session);
+            return session;
+        }
+        return null;
     }
 
-    public boolean delete(String sessionId) {
-        Objects.requireNonNull(sessionId, "Session ID cannot be null");
-        return sessionMap.remove(sessionId) != null;
+    @Override
+    public boolean delete(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        Session sessionToDelete = read(id);
+        return sessionToDelete != null && sessionList.remove(sessionToDelete);
     }
 
+    @Override
     public List<Session> getAll() {
-        return new ArrayList<>(sessionMap.values());
+        return new ArrayList<>(sessionList);
     }
 
-    public void clear() {
-        sessionMap.clear();
-    }
 }
-
 /* OnlineTutoring.java
 Tutor model class
 Author: Basetsana Masisi (222309385)
 Date: 22 March 2025
-modified 25 March 2025
+modified 27 March 2025
 */
