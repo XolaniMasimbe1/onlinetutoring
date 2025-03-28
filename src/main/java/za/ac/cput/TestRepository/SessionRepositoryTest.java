@@ -1,50 +1,60 @@
 package za.ac.cput.TestRepository;
 
+import org.junit.jupiter.api.*;
 import za.ac.cput.domain.Session;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import za.ac.cput.domain.Tutor;
+import za.ac.cput.domain.Student;
+import za.ac.cput.domain.Subject;
 import za.ac.cput.repository.SessionRepositoryImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestMethodOrder(MethodOrderer.MethodName.class) // Ensures test order
+@TestMethodOrder(MethodOrderer.MethodName.class)
 class SessionRepositoryTest {
-    private static SessionRepositoryImpl repository;
+    private SessionRepositoryImpl repository;
     private Session session;
+    private Tutor tutor;
+    private Student student;
+    private Subject subject;
 
     @BeforeEach
     void setUp() {
         repository = SessionRepositoryImpl.getRepository();
-        repository.getAll().clear(); // Clear repository before each test
+
+        tutor = new Tutor.Builder().setIdentityNumber("Tt01").build();
+        student = new Student.Builder().setStudentId("Std01").build();
+        subject = new Subject.Builder().setSubjectId("Sbj01").build();
 
         session = new Session.Builder()
-                .setSessionId("S001")
-                .setTutorId("T001")
-                .setStudentId("STU001")
-                .setSubjectCode("MATH101")
+                .setSessionId("Ss01")
+                .setTutor(tutor)
+                .setStudent(student)
+                .setSubject(subject)
                 .setDate("2025-04-01")
                 .setTime("10:00")
                 .setDuration("1 hour")
                 .build();
     }
 
+    @AfterEach
+    void tearDown() {
+        repository.getAll().clear();
+    }
+
     @Test
     void a_testCreate() {
         Session created = repository.create(session);
         assertNotNull(created);
-        assertEquals(session.getSessionId(), created.getSessionId());
-        assertTrue(repository.getAll().contains(created));
+        assertEquals("S001", created.getSessionId());
+        assertEquals(1, repository.getAll().size());
     }
 
     @Test
     void b_testRead() {
-        repository.create(session); // Ensure session exists first
-        Session read = repository.read("S001");
-        assertNotNull(read);
-        assertEquals(session.getSessionId(), read.getSessionId());
-        assertEquals(session.getTutorId(), read.getTutorId());
+        repository.create(session);
+        Session found = repository.read("S001");
+        assertNotNull(found);
+        assertEquals("S001", found.getSessionId());
     }
 
     @Test
@@ -52,12 +62,12 @@ class SessionRepositoryTest {
         repository.create(session);
         Session updated = new Session.Builder()
                 .copy(session)
-                .setTime("11:00") // Change time
+                .setTime("11:00")
                 .build();
 
-        Session result = repository.update(updated);
-        assertNotNull(result);
-        assertEquals("11:00", repository.read("S001").getTime());
+        repository.update(updated);
+        Session result = repository.read("S001");
+        assertEquals("11:00", result.getTime());
     }
 
     @Test
@@ -66,6 +76,7 @@ class SessionRepositoryTest {
         boolean deleted = repository.delete("S001");
         assertTrue(deleted);
         assertNull(repository.read("S001"));
+        assertEquals(0, repository.getAll().size());
     }
 
     @Test
@@ -74,16 +85,8 @@ class SessionRepositoryTest {
         assertEquals(1, repository.getAll().size());
     }
 }
-
-
-
-
-
-//* OnlineTutoring.java
-////
-////Tutor model class
-//Author: Basetsana Masisi (222309385)
-//Date: 24 March  2025
-// 25 march 2025
-//* /
-//*/
+/* SessionRepositoryTest.java
+   Test for SessionRepository
+   Author: [Basetsana Masisi (222309385)]
+   Date: [26 March 2025]
+*/
