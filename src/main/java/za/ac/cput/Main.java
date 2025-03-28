@@ -64,7 +64,7 @@ public class Main {
     }
 }
 /* OnlineTutoring.java
-Subject model class
+Main  class
 Author: Xolani Masimbe (222410817)
 Author: Basetsana Masisi (222309385)
 Date: 23 March 2025
