@@ -64,3 +64,9 @@ public class TutorRepository implements IRepository<Tutor, String> {
         return tutorList;
     }
 }
+/* OnlineTutoring.java
+Tutor repository class
+Author: Xolani Masimbe (222410817)
+Date: 28 March 2025
+
+*/

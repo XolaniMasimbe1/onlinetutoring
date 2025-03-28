@@ -1,5 +1,10 @@
 package za.ac.cput.factory;
 
+/* Student.java
+   Author: Anda Matomela (222578912)
+   Date: 22 March 2025
+*/
+
 import za.ac.cput.domain.Student;
 import za.ac.cput.util.Helper;
 
