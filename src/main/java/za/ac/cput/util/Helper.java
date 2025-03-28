@@ -16,3 +16,9 @@ public class Helper {
         return email.contains("@") && email.contains(".");
     }
 }
+/* OnlineTutoring.java
+Helper class
+Author: Xolani Masimbe (222410817)
+Date: 23 March 2025
+
+*/
