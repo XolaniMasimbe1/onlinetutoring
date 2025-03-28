@@ -1,71 +1,80 @@
 package za.ac.cput.repository;
 
 import za.ac.cput.domain.Session;
+import za.ac.cput.repository.IRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class SessionRepositoryImpl implements IRepository<Session, String> {
-    private final List<Session> sessionDB;  // Final to ensure it is not reassigned
     private static SessionRepositoryImpl repository = null;
+    private final List<Session> sessionList;
 
     private SessionRepositoryImpl() {
-        this.sessionDB = new ArrayList<>();
+        sessionList = new ArrayList<>();
     }
 
-    // Singleton Pattern with Thread Safety
     public static SessionRepositoryImpl getRepository() {
         if (repository == null) {
-            synchronized (SessionRepositoryImpl.class) {
-                if (repository == null) {
-                    repository = new SessionRepositoryImpl();
-                }
-            }
+            repository = new SessionRepositoryImpl();
         }
         return repository;
     }
 
     @Override
     public Session create(Session session) {
-        if (session == null) return null;  // Prevent adding null values
-        this.sessionDB.add(session);
-        return session;
+        if (session == null || session.getSessionId() == null) {
+            throw new IllegalArgumentException("Session ID cannot be null");
+        }
+        boolean success = sessionList.add(session);
+        return success ? session : null;
     }
 
     @Override
-    public Session read(String sessionId) {
-        if (sessionId == null) return null; // Prevent NullPointerException
-        return this.sessionDB.stream()
-                .filter(session -> sessionId.equals(session.getSessionId()))
-                .findFirst()
-                .orElse(null);
+    public Session read(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException(" SessionID cannot be null");
+        }
+        for (Session s : sessionList) {
+            if (s.getSessionId().equals(id)) {
+                return s;
+            }
+        }
+        return null;
     }
 
     @Override
     public Session update(Session session) {
-        if (session == null || session.getSessionId() == null) return null;
-
-        Session oldSession = read(session.getSessionId());
-        if (oldSession != null) {
-            sessionDB.remove(oldSession);  // This works if `equals()` is properly implemented in `Session`
-            sessionDB.add(session);
+        if (session == null || session.getSessionId() == null) {
+            throw new IllegalArgumentException("Session and Session ID cannot be null");
+        }
+        Session existingSession = read(session.getSessionId());
+        if (existingSession != null) {
+            sessionList.remove(existingSession);
+            sessionList.add(session);
             return session;
         }
         return null;
     }
 
     @Override
-    public boolean delete(String sessionId) {
-        if (sessionId == null) return false;
-        Session session = read(sessionId);
-        if (session != null) {
-            this.sessionDB.remove(session);
-            return true;
+    public boolean delete(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
         }
-        return false;
+        Session sessionToDelete = read(id);
+        return sessionToDelete != null && sessionList.remove(sessionToDelete);
     }
 
     @Override
     public List<Session> getAll() {
-        return new ArrayList<>(sessionDB); // Returning a copy to prevent modification outside this class
+        return new ArrayList<>(sessionList);
     }
+
 }
+/* OnlineTutoring.java
+Tutor model class
+Author: Basetsana Masisi (222309385)
+Date: 22 March 2025
+modified 27 March 2025
+*/

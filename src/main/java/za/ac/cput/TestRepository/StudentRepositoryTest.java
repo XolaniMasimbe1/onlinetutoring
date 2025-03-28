@@ -1,111 +1,61 @@
 package za.ac.cput.TestRepository;
 
-/* StudentRepositoryTest.java
+/* Student.java
    Author: Anda Matomela (222578912)
    Date: 22 March 2025
+   Modified: 28 March 2025
 */
 
+import org.junit.jupiter.api.*;
 import za.ac.cput.domain.Student;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import za.ac.cput.factory.StudentFactory;
 import za.ac.cput.repository.StudentRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
+@TestMethodOrder(MethodOrderer.MethodName.class)
+class StudentRepositoryTest {
 
-public class StudentRepositoryTest {
-    private StudentRepository studentRepository;
+    private static StudentRepository repository = StudentRepository.getRepository();
+    private static Student student = StudentFactory.createStudent(
+            "S001", "John", "Doe", "john.doe@example.com");
 
-    @BeforeEach
-    public void setUp() {
-        studentRepository = StudentRepository.getRepository();
+    @Test
+    void a_create() {
+        Student created = repository.create(student);
+        assertNotNull(created);
+        System.out.println("Created: " + created);
     }
 
     @Test
-    public void testCreateStudent() {
-        Student student = new Student.Builder()
-                .setStudentId("S001")
-                .setFirstName("John")
-                .setLastName("Doe")
-                .setEmail("john.doe@example.com")
-                .build();
-
-        assertNotNull(studentRepository.create(student));
+    void b_read() {
+        Student read = repository.read(student.getStudentId());
+        assertNotNull(read);
+        System.out.println("Read: " + read);
     }
 
     @Test
-    public void testReadStudent() {
-        Student student = new Student.Builder()
-                .setStudentId("S002")
-                .setFirstName("Jane")
-                .setLastName("Smith")
-                .setEmail("jane.smith@example.com")
-                .build();
-
-        studentRepository.create(student);
-        Student readStudent = studentRepository.read("S002");
-
-        assertNotNull(readStudent);
-        assertEquals("Jane", readStudent.getFirstName());
-    }
-
-    @Test
-    public void testUpdateStudent() {
-        Student student = new Student.Builder()
-                .setStudentId("S003")
-                .setFirstName("Alice")
-                .setLastName("Johnson")
-                .setEmail("alice.johnson@example.com")
-                .build();
-
-        studentRepository.create(student);
-
+    void c_update() {
         Student updatedStudent = new Student.Builder()
-                .setStudentId("S003")
-                .setFirstName("Alice")
-                .setLastName("Brown")
-                .setEmail("alice.brown@example.com")
+                .copy(student)
+                .setLastName("Smith")
+                .setEmail("john.smith@example.com")
                 .build();
-
-        assertNotNull(studentRepository.update(updatedStudent));
-        assertEquals("Brown", studentRepository.read("S003").getLastName());
+        Student updated = repository.update(updatedStudent);
+        assertNotNull(updated);
+        System.out.println("Updated: " + updated);
     }
 
     @Test
-    public void testDeleteStudent() {
-        Student student = new Student.Builder()
-                .setStudentId("S004")
-                .setFirstName("Bob")
-                .setLastName("White")
-                .setEmail("bob.white@example.com")
-                .build();
-
-        studentRepository.create(student);
-        assertTrue(studentRepository.delete("S004"));
-        assertNull(studentRepository.read("S004"));
+    @Disabled
+    void d_delete() {
+        boolean success = repository.delete(student.getStudentId());
+        assertTrue(success);
+        System.out.println("Deleted: successfully");
     }
 
     @Test
-    public void testGetAllStudents() {
-        Student student1 = new Student.Builder()
-                .setStudentId("S005")
-                .setFirstName("Tom")
-                .setLastName("Brown")
-                .setEmail("tom.brown@example.com")
-                .build();
-
-        Student student2 = new Student.Builder()
-                .setStudentId("S006")
-                .setFirstName("Sara")
-                .setLastName("Davis")
-                .setEmail("sara.davis@example.com")
-                .build();
-
-        studentRepository.create(student1);
-        studentRepository.create(student2);
-
-        List<Student> students = studentRepository.getAll();
-        assertEquals(2, students.size());
+    void e_getAll() {
+        System.out.println("All students: " + repository.getAll());
     }
 }

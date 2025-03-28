@@ -4,59 +4,64 @@ import java.util.Objects;
 
 public class Session {
     private final String sessionId;
-    private final String tutorId;
-    private final String studentId;
-    private final String subjectCode;
+    private final Tutor tutor;
+    private final Student student;
+    private final Subject subject;
     private final String date;
     private final String time;
     private final String duration;
+    private Review review;
 
     private Session(Builder builder) {
         this.sessionId = builder.sessionId;
-        this.tutorId = builder.tutorId;
-        this.studentId = builder.studentId;
-        this.subjectCode = builder.subjectCode;
+        this.tutor = builder.tutor;
+        this.student = builder.student;
+        this.subject = builder.subject;
         this.date = builder.date;
         this.time = builder.time;
         this.duration = builder.duration;
+        this.review = builder.review;
     }
 
-    // Getters
+
     public String getSessionId() { return sessionId; }
-    public String getTutorId (){ return tutorId; }
-    public String getStudentId() { return studentId; }
-    public String getSubjectCode() { return subjectCode; }
+    public Tutor getTutor() { return tutor; }
+    public Student getStudent() { return student; }
+    public Subject getSubject() { return subject; }
     public String getDate() { return date; }
     public String getTime() { return time; }
     public String getDuration() { return duration; }
+    public Review getReview() { return review; }
 
-    // Builder Class
+
+
     public static class Builder {
         private String sessionId;
-        private String tutorId;
-        private String studentId;
-        private String subjectCode;
+        private Tutor tutor;
+        private Student student;
+        private Subject subject;
         private String date;
         private String time;
         private String duration;
+        private Review review;
 
         public Builder setSessionId(String sessionId) {
             this.sessionId = sessionId;
             return this;
         }
 
-        public Builder setTutorId(String tutorId) {
-            this.tutorId = tutorId;
+        public Builder setTutor(Tutor tutor) {
+            this.tutor = tutor;
             return this;
         }
 
-        public Builder setStudentId(String studentId) {
-            this.studentId = studentId;
+        public Builder setStudent(Student student) {
+            this.student = student;
             return this;
         }
 
-        public Builder setSubjectCode(String subjectCode) {
-            this.subjectCode = subjectCode;
+        public Builder setSubject(Subject subject) {
+            this.subject = subject;
             return this;
         }
 
@@ -75,34 +80,23 @@ public class Session {
             return this;
         }
 
-        public Session build() {
-            return new Session(this);
-        }
 
-        // Copy existing Session object
+
         public Builder copy(Session session) {
             this.sessionId = session.sessionId;
-            this.tutorId = session.tutorId;
-            this.studentId = session.studentId;
-            this.subjectCode = session.subjectCode;
+            this.tutor = session.tutor;
+            this.student = session.student;
+            this.subject = session.subject;
             this.date = session.date;
             this.time = session.time;
             this.duration = session.duration;
+            this.review = session.review;
             return this;
         }
-    }
 
-    @Override
-    public String toString() {
-        return "Session{" +
-                "sessionId='" + sessionId + '\'' +
-                ", tutorId='" + tutorId + '\'' +
-                ", studentId='" + studentId + '\'' +
-                ", subjectCode='" + subjectCode + '\'' +
-                ", date='" + date + '\'' +
-                ", time='" + time + '\'' +
-                ", duration='" + duration + '\'' +
-                '}';
+        public Session build() {
+            return new Session(this);
+        }
     }
 
     @Override
@@ -117,12 +111,26 @@ public class Session {
     public int hashCode() {
         return Objects.hash(sessionId);
     }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "sessionId='" + sessionId + '\'' +
+                ", tutor=" + tutor +
+                ", student=" + student +
+                ", subject=" + subject +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                ", duration='" + duration + '\'' +
+                ", review=" + review +
+                '}';
+    }
 }
 
-
-/* OnlineTutoring.java
-Tutor model class
-Author: Basetsana Masisi (222309385)
-Date: 21 March 2025
-modify 24 march
+/*  onlineturing
+Session.java
+   Author: Basetsana Masisi (222309385)
+   Date: 21 March 2025
+   modified 25 March 2025
 */
+

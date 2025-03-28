@@ -1,19 +1,17 @@
 package za.ac.cput.repository;
-/* TutorRepository.java
-Author: Xolani Masimbe (222410817)
-Date: 23 March 2025
-*/
+
 import za.ac.cput.domain.Tutor;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TutorRepository implements IRepository<Tutor, String> {
-    private List<Tutor> tutorList = new ArrayList<>();
-
 
     private static TutorRepository repository = null;
+    private List<Tutor> tutorList;
 
-    private TutorRepository() {}
+    private TutorRepository() {
+        tutorList = new ArrayList<>();
+    }
 
     public static TutorRepository getRepository() {
         if (repository == null) {
@@ -24,15 +22,18 @@ public class TutorRepository implements IRepository<Tutor, String> {
 
     @Override
     public Tutor create(Tutor tutor) {
-        tutorList.add(tutor);
-        return tutor;
+        boolean success = tutorList.add(tutor);
+        if (success) {
+            return tutor;
+        }
+        return null;
     }
 
     @Override
     public Tutor read(String identityNumber) {
-        for (Tutor tutor : tutorList) {
-            if (tutor.getIdentityNumber().equals(identityNumber)) {
-                return tutor;
+        for (Tutor t : tutorList) {
+            if (t.getIdentityNumber().equals(identityNumber)) {
+                return t;
             }
         }
         return null;
@@ -51,16 +52,15 @@ public class TutorRepository implements IRepository<Tutor, String> {
 
     @Override
     public boolean delete(String identityNumber) {
-        Tutor tutor = read(identityNumber);
-        if (tutor != null) {
-            tutorList.remove(tutor);
-            return true;
+        Tutor tutorToDelete = read(identityNumber);
+        if (tutorToDelete == null) {
+            return false;
         }
-        return false;
+        return tutorList.remove(tutorToDelete);
     }
 
     @Override
     public List<Tutor> getAll() {
-        return new ArrayList<>(tutorList);
+        return tutorList;
     }
 }
